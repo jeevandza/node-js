@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video streaming</title>
+    <style>
+      body {
+        margin: 5% auto;
+        max-width: 100%;
+        background-color: rgb(14, 14, 14);
+        padding-top: 10%;
+        padding-left: 35%;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <video id="myVideo" width="50%" controls muted="muted" autoplay>
+        <source src="/video" type="video/mp4" />
+      </video>
+      
+    </div>
+    <script>
+      const videoUrl = "http://localhost:9000/video"; 
+
+      fetch(videoUrl)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.blob();
+        })
+        .then((videoBlob) => {
+          console.log(videoBlob, 'response')
+
+          const videoElement = document.getElementById("myVideo");
+          videoElement.src = URL.createObjectURL(videoBlob);
+          videoElement.controls = true;
+          document.body.appendChild(videoElement);
+        })
+        .catch((error) => {
+          console.error("Fetch error:", error);
+        });
+    </script>
+  </body>
+</html>
